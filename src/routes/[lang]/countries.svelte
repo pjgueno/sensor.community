@@ -17,6 +17,7 @@
 
     var countSensor = {};
     // const selector = {};
+    const sensorTypes = {"PM":["sds011","sps30","hpm","pms7003"],"noise":["laerm"],"radiation":["radiation_si22g"],"temphumipress":["dht22","bme280"]};
 
     const today = new Date();
     const yesterday = dateFormater(today);
@@ -47,19 +48,22 @@ function selectedCountry(e){
     });
     
     if (selection.code != 'WORLD'){
-    document.getElementById('map-frame1').src = 'https://stats.sensor.community/sensors_per_country/?country=' + selection.code;
+    document.getElementById('map-frame1').src = 'https://stats.sensor.community/sensors_per_country/?simple=yes&country=' + selection.code;
     document.getElementById('map-frame2').src = 'https://'+ selection.id +'.maps.sensor.community/';
     } else {
-    document.getElementById('map-frame1').src = 'https://stats.sensor.community/sensors_per_country/;
+    document.getElementById('map-frame1').src = 'https://stats.sensor.community/sensors_per_country/';
     document.getElementById('map-frame2').src = 'https://maps.sensor.community/'; 
     }
     
+    var PMCount = 0;
+    var TRHPCount = 0;
+    var radiationCount = 0;
+    var noiseCount = 0;
 
     if (countSensor.sds011.hasOwnProperty(selection.code)){document.getElementById('value1').innerHTML = countSensor.sds011[selection.code].toString()}else{document.getElementById('value1').innerHTML = "0"};
     if (countSensor.bme280.hasOwnProperty(selection.code)){document.getElementById('value2').innerHTML = countSensor.bme280[selection.code].toString()}else{document.getElementById('value2').innerHTML = "0"};
 
 }
-
     function dateFormater(date) {
     //one day before
      date.setDate(date.getDate()-1);
@@ -94,7 +98,7 @@ function delaySelector() {
 function delayMap1() {
     if (process.browser) {
         setTimeout(function () {
-            document.getElementById('map-frame1').src = 'https://stats.sensor.community/sensors_per_country/?country=';
+            document.getElementById('map-frame1').src = 'https://stats.sensor.community/sensors_per_country/?simple=yes&country=';
             // document.getElementById("countrySelector").addEventListener("change",selectedCountry);
         }, 900);
     }
@@ -144,12 +148,22 @@ function delayMap2() {
     
     <div class="flex" style="height: 5em;">
         <p id="value1" class="text-xl mx-auto md:pr-8 mt-4 mb-4 leading-reading"></p>
-        <p class="text-xl mx-auto md:pr-8 mt-4 mb-4 leading-reading">SDS011</p>
+        <p class="text-xl mx-auto md:pr-8 mt-4 mb-4 leading-reading">Particulate matter</p>
     </div>
 
     <div class="flex" style="height: 5em;">
         <p id="value2" class="text-xl mx-auto md:pr-8 mt-4 mb-4 leading-reading"></p>
-        <p class="text-xl mx-auto md:pr-8 mt-4 mb-4 leading-reading">BME280</p>
+        <p class="text-xl mx-auto md:pr-8 mt-4 mb-4 leading-reading">Temperature/RH/Pressure</p>
+    </div>
+
+    <div class="flex" style="height: 5em;">
+        <p id="value3" class="text-xl mx-auto md:pr-8 mt-4 mb-4 leading-reading"></p>
+        <p class="text-xl mx-auto md:pr-8 mt-4 mb-4 leading-reading">Radiation</p>
+    </div>
+
+    <div class="flex" style="height: 5em;">
+        <p id="value4" class="text-xl mx-auto md:pr-8 mt-4 mb-4 leading-reading"></p>
+        <p class="text-xl mx-auto md:pr-8 mt-4 mb-4 leading-reading">Noise</p>
     </div>
 
     <div class="relative z-20 md:block mx-auto md:bg-white md:shadow-lg z-10 mb-10">
